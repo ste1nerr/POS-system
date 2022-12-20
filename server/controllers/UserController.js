@@ -88,7 +88,6 @@ export const adminLogin = async (req, res) => {
 };
 
 
-
 export const register = async (req, res) => {
     try {
         const errors = validationResult(req);
