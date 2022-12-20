@@ -21,6 +21,6 @@ export const registerValidation= [
 export const dishCreateValidation = [
     body('title', 'enter the name of the dish').isLength({min:2}).isString(),
     body('compositions', 'enter the name of the element').isLength({min:2}).isString().optional(),
-    body('weight', 'enter the weight of the dish').isLength({min:1}).isFloat(),
-    body('cost', 'enter the price of the dish').isLength({min:1}).isFloat(),
+    body('weight', 'enter the weight of the dish').isLength({min:1}).isNumeric(),
+    body('cost', 'enter the price of the dish').isLength({min:1}).isNumeric(),
 ];

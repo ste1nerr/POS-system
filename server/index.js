@@ -5,11 +5,15 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
+
+
+
 import * as UserController from '../server/controllers/UserController.js'
+import * as DishController from '../server/controllers/DishController.js'
 
 
 
-import { registerValidation, loginAdminValidation, loginValidation } from "./validations/validations.js";
+import { registerValidation, loginAdminValidation, loginValidation, dishCreateValidation } from "./validations/validations.js";
 import checkAuth from '../server/utils/checkAuth.js'
 
 mongoose.connect(`mongodb+srv://${process.env.username_DB}:${process.env.password_DB}@cluster0.9srmsbp.mongodb.net/${process.env.name_DB}?retryWrites=true&w=majority`)
@@ -29,6 +33,13 @@ app.post('/auth/register', registerValidation, UserController.register)
 
 app.get('/auth/me', checkAuth, UserController.getMe)
 
+// ====================
+
+// app.get('/dishes', DishController.getAll);
+// app.get('/dishes/:id', DishController.getOne);
+app.post('/dishes',checkAuth ,dishCreateValidation,DishController.create);
+// app.get('/dishes', DishController.delete);
+// app.get('/dishes', DishController.update);
 
 app.listen(process.env.PORT, (err) => {
     if (err) {
