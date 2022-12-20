@@ -8,7 +8,7 @@ import * as UserController from '../server/controllers/UserController.js'
 import { registerValidation } from "./validations/auth.js";
 import checkAuth from '../server/utils/checkAuth.js'
 
-mongoose.connect('mongodb+srv://admin:admin@cluster0.9srmsbp.mongodb.net/blog?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://admin:admin@cluster0.9srmsbp.mongodb.net/pos-system?retryWrites=true&w=majority')
     .then(() => console.log('DB ok'))
     .catch((err) => console.log('DB error', err));
 
@@ -18,6 +18,8 @@ app.use(express.json());
 
 
 app.post('/auth/login', UserController.login)
+
+app.post('/auth/adminLogin', UserController.adminLogin)
 
 app.post('/auth/register', registerValidation, UserController.register)
 
