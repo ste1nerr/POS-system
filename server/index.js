@@ -35,10 +35,9 @@ app.get('/auth/me', checkAuth, UserController.getMe)
 
 // ====================
 
-// app.get('/dishes', DishController.getAll);
-// app.get('/dishes/:id', DishController.getOne);
+app.get('/dishes', DishController.getAll);
 app.post('/dishes',checkAuth ,dishCreateValidation,DishController.create);
-// app.get('/dishes', DishController.delete);
+app.delete('/dishes/:id', checkAuth , DishController.remove);
 // app.get('/dishes', DishController.update);
 
 app.listen(process.env.PORT, (err) => {
