@@ -1,7 +1,5 @@
-
-
 //////////////////////////
-// LOGIN/////////////////
+//Registration/////////////////
 /////////////////////////
 .title {
     font-family: 'Montserrat', sans-serif;
@@ -49,6 +47,10 @@
         letter-spacing: .2rem;
     }
 
+    .input_admin_password {
+        letter-spacing: .2rem;
+    }
+
     input::placeholder {
         letter-spacing: 0.1rem;
         font-size: 1rem;
@@ -56,7 +58,7 @@
 }
 
 
-.login_btn {
+.registration_btn {
     margin-top: 20%;
     line-height: 20px;
     display: flex;
@@ -70,7 +72,7 @@
     font-size: 20px;
 }
 
-.login_btn:hover{
+.registration_btn:hover{
     background-color: #56b53e;
     border: 1px solid #E1E1E1;
     border-radius: 20px;
@@ -84,9 +86,7 @@
         line-height: 20px;
         max-width: 45%;
     }
-
-    .login_btn {
-        line-height: 20px;
+    .registration_btn {
         max-width: 45%;
     }
     
@@ -100,12 +100,11 @@
         max-width: 65%;
     }
 
-    .login_btn {
-        line-height: 20px;
-        max-width: 45%;
+    .registration_btn {
+        max-width: 65%;
     }
     
 }
 //////////////////////////
-// LOGIN/////////////////
+// Registration/////////////////
 /////////////////////////
