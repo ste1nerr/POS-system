@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 config();
-
+import cors from 'cors'
 import express from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
@@ -23,7 +23,11 @@ mongoose.connect(`mongodb+srv://${process.env.username_DB}:${process.env.passwor
 
 const app = express();
 
+
+
 app.use(express.json());
+
+app.use(cors());
 
 
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login)
@@ -34,9 +38,9 @@ app.get('/auth/me', checkAuth, UserController.getMe)
 // ====================
 
 app.get('/dishes', DishController.getAll);
-app.post('/dishes',checkAuth ,dishCreateValidation,DishController.create);
-app.delete('/dishes/:id', checkAuth , DishController.remove);
-app.patch('/dishes/:id', DishController.update);
+// app.post('/dishes1',checkAuth ,dishCreateValidation,DishController.create);
+// app.delete('/dishes/:id', checkAuth , DishController.remove);
+// app.patch('/dishes/:id', DishController.update);
 
 app.listen(process.env.PORT, (err) => {
     if (err) {

@@ -1,13 +1,40 @@
-import React from 'react'
+import axios from 'axios'
 import styles from './Menu.module.scss'
+import { useState, useEffect } from 'react'
+import Cart from '../Cart/Cart';
+
+
+
 const Menu = () => {
+
+    const [error, setError] = useState(null);
+    const [dishes, setDishes] = useState([]);
+    const [openModal, setOpenModal] = useState(false)
+
+
+
+
+    useEffect(() => {
+        (async () => {
+            const data = await fetch('http://localhost:5000/dishes');
+            var temp = await data.json();
+            setDishes(temp)
+            await console.log(dishes)
+        })();
+    }, []);
+
+
+
     return (
         <>
             <div className="container">
+
+
                 <header>
                     <p className={styles.menu_title}>Menu</p>
                     <div className={styles.icons_menu}>
-                        <a href="https://www.tutorialspoint.com"><img src="./basket-icon.svg" alt="" className={styles.menu_basket} /></a>
+                        <a onClick={() => setOpenModal(true)}><img src="./basket-icon.svg" alt="" className={styles.menu_basket} /></a>
+                        <Cart open = {openModal} onClose={()=> setOpenModal(false)}/>
                         <a href="https://www.tutorialspoint.com"><img src="./profile-icon.svg" alt="" className={styles.menu_profile} /> </a>
                     </div>
                 </header>
@@ -26,71 +53,23 @@ const Menu = () => {
                     </div>
 
                     <div className={styles.menu_items}>
-                        <div className={styles.menu_item}>
-                            <div className={styles.menu_item_text}>
-                                <div className={styles.line}></div>
-                                <div className={styles.menu_item_title}>Brownie</div>
-                                <div className={styles.menu_item_ingredients}>Dark chocolate Butter, Brown sugar, Egg, Wheat flour, Walnuts</div>
+                        {dishes.map((el) => (
+                            <div className={styles.menu_item}>
+                                <div className={styles.menu_item_text}>
+                                    <div className={styles.line}></div>
+                                    <div className={styles.menu_item_title}>{el.title}</div>
+                                    <div className={styles.menu_item_ingredients}>{el.compositions}</div>
+                                </div>
+                                <div className={styles.menu_item_numbers}>
+                                    <div className={styles.menu_item_weight}>{el.weight}g</div>
+                                    <div className={styles.menu_item_cost}>{el.cost}₴</div>
+                                    <a href="https://www.tutorialspoint.com"><img src="./plus.svg" alt="" className={styles.menu_item_plus} /> </a>
+                                </div>
                             </div>
-                            <div className={styles.menu_item_numbers}>
-                                <div className={styles.menu_item_weight}>175g</div>
-                                <div className={styles.menu_item_cost}>220₴</div>
-                                <a href="https://www.tutorialspoint.com"><img src="./plus.svg" alt="" className={styles.menu_item_plus} /> </a>
-                            </div>
-                        </div>
-                        <div className={styles.menu_item}>
-                            <div className={styles.menu_item_text}>
-                                <div className={styles.line}></div>
-                                <div className={styles.menu_item_title}>Brownie</div>
-                                <div className={styles.menu_item_ingredients}></div>
-                            </div>
-                            <div className={styles.menu_item_numbers}>
-                                <div className={styles.menu_item_weight}>175g</div>
-                                <div className={styles.menu_item_cost}>220₴</div>
-                                <a href="https://www.tutorialspoint.com"><img src="./plus.svg" alt="" className={styles.menu_item_plus} /> </a>
-                            </div>
-                        </div>
-
-                        <div className={styles.menu_item}>
-                            <div className={styles.menu_item_text}>
-                                <div className={styles.line}></div>
-                                <div className={styles.menu_item_title}>Brownie</div>
-                                <div className={styles.menu_item_ingredients}>Dark chocolate Butter, Brown sugar, Egg, Wheat flour, Walnuts</div>
-                            </div>
-                            <div className={styles.menu_item_numbers}>
-                                <div className={styles.menu_item_weight}>175g</div>
-                                <div className={styles.menu_item_cost}>220₴</div>
-                                <a href="https://www.tutorialspoint.com"><img src="./plus.svg" alt="" className={styles.menu_item_plus} /> </a>
-                            </div>
-                        </div>
+                        ))}
 
 
-                        <div className={styles.menu_item}>
-                            <div className={styles.menu_item_text}>
-                                <div className={styles.line}></div>
-                                <div className={styles.menu_item_title}>Brownie</div>
-                                <div className={styles.menu_item_ingredients}>Dark chocolate Butter, Brown sugar, Egg, Wheat flour, Walnuts</div>
-                            </div>
-                            <div className={styles.menu_item_numbers}>
-                                <div className={styles.menu_item_weight}>175g</div>
-                                <div className={styles.menu_item_cost}>220₴</div>
-                                <a href="https://www.tutorialspoint.com"><img src="./plus.svg" alt="" className={styles.menu_item_plus} /> </a>
-                            </div>
-                        </div>
 
-
-                        <div className={styles.menu_item}>
-                            <div className={styles.menu_item_text}>
-                                <div className={styles.line}></div>
-                                <div className={styles.menu_item_title}>Brownie</div>
-                                <div className={styles.menu_item_ingredients}>Dark chocolate Butter, Brown sugar, Egg, Wheat flour, Walnuts</div>
-                            </div>
-                            <div className={styles.menu_item_numbers}>
-                                <div className={styles.menu_item_weight}>175g</div>
-                                <div className={styles.menu_item_cost}>220₴</div>
-                                <a href="https://www.tutorialspoint.com"><img src="./plus.svg" alt="" className={styles.menu_item_plus} /> </a>
-                            </div>
-                        </div>
 
                     </div>
                 </div>
@@ -99,5 +78,6 @@ const Menu = () => {
         </>
     )
 }
+
 
 export default Menu

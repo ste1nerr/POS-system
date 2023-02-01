@@ -1,10 +1,20 @@
 import React from 'react'
+import { useState } from 'react'
 import styles from './Cart.module.scss'
 
-const Cart = () => {
+const Cart = ({open, onClose}) => {
+    if(!open) return null
+
+
     return (
         <>
             <div className={styles.cart}>
+                <div onClick={onClose} className={styles.back_menu}>
+                    <img src="./back.svg" alt="" />
+                    <p className={styles.cancel}>back to menu</p>
+                </div>
+
+
                 <div className={styles.cart_items}>
                     <div className={styles.cart_item}>
                         <div className={styles.cart_item_text}>
@@ -67,7 +77,7 @@ const Cart = () => {
                             <div className={styles.cart_item_weight}>175g</div>
                             <div className={styles.cart_item_controller}>
                                 <a href="" className={styles.cart_item_minus}>-</a>
-                                <p href="" className={styles.cart_item_quant}>0</p>
+                                <p href="" className={styles.cart_item_quant}>1</p>
                                 <a href="" className={styles.cart_item_plus}>+</a>
                             </div>
                             <div className={styles.cart_item_cost}>220₴</div>
@@ -78,7 +88,7 @@ const Cart = () => {
                     <div className={styles.cart_line}></div>
                     <div className={styles.cart_underline}>
                         <p className={styles.cart_summ_text}>Account amount:</p>
-                        <p className={styles.cart_summ_price}>3300</p>
+                        <p className={styles.cart_summ_price}>3300₴</p>
                     </div>
                 </div>
 

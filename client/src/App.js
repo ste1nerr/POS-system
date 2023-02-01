@@ -11,14 +11,9 @@ function App() {
     <>
 
       <Routes>
+        <Route path="/" element={<Login/>} />
+        <Route path="/dishes" element={<Menu />} />
 
-        {/* {<Route path="/" element={<Login />} /> */}
-        {/* {<Route path="/" element={<Registration/>} /> */}
-        //{<Route path="/" element={<Cart/>} />
-          // <Route path="auth" element={}/>
-          // <Route path="register" element={}/>
-          // <Route path="admin_panel" element={}/> 
-        }
       </Routes>
     </>
   );

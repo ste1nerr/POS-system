@@ -27,8 +27,6 @@ export const create = async (req, res) => {
 export const getAll = async (req, res) => {
   try {
     const dishes = await DishModel.find();
-
-
     res.json(dishes)
   } catch (err) {
     console.log(err);

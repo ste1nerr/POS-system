@@ -7,8 +7,13 @@ header {
     align-items: center;
     margin-bottom: 2%;
 
-
+    .cancel{
+        font-size: 20px;
+        color: #3A3A3A;
+        z-index: 10000;
+    }
     .menu_basket {
+        cursor: pointer;
         margin-top: -4px;
     }
 
@@ -23,6 +28,7 @@ header {
     }
 
     .icons_menu {
+        cursor: pointer;
         margin-right: 3.5%;
         gap: 40px;
         display: flex;
@@ -95,6 +101,7 @@ header {
 }
 
 .menu_item_numbers {
+    position: relative;
     display: flex;
     align-items: center;
     gap: 2vw;
@@ -126,10 +133,10 @@ header {
     font-weight: 500;
     font-size: 25px;
     line-height: 30px;
-
 }
 
 .menu_item_cost {
+    text-align: left;
     font-style: normal;
     font-weight: 800;
     font-size: 40px;

@@ -1,14 +1,42 @@
 .cart {
+    flex-direction: column;
     position: fixed;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 1);
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: auto;
+    z-index: 10;
+}
 
+.back_menu {
+    cursor: pointer;
+    min-width: 20vw;
+    display: flex;
+    position: relative;
+    left: -22vw;
+    top: -3vh;
+}
+.cancel {
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 18px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    color: #3A3A3A;
+}
+.cancel:hover{
+    transition-duration: 0.2s;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 18px;
+    color: rgb(46, 46, 46);
 }
 
 .cart_items {
@@ -20,8 +48,8 @@
 }
 
 .cart_item {
-    gap: 35%;
     display: flex;
+    justify-content: space-between;
 }
 
 .cart_item+.cart_item {
@@ -50,11 +78,10 @@
 }
 
 .menu_item_numbers {
-    gap: 20%;
+    gap: 2vw;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 1%;
 }
 
 .cart_item_weight {
@@ -68,8 +95,8 @@
 }
 
 .cart_item_controller {
-    min-width: 35%;
-    padding: 1% 6%;
+    min-width: 24%;
+    padding: 1% 4%;
     gap: 15%;
     display: flex;
     background: #F4F4F4;
@@ -79,6 +106,8 @@
     font-size: 35px;
     line-height: 30px;
     color: #3A3A3A;
+    display: flex;
+    justify-content: center;
 
 }
 
@@ -87,6 +116,7 @@
 }
 
 .cart_item_quant {
+    color: #3A3A3A;
     font-size: 20px;
 }
 
@@ -106,7 +136,7 @@
 
 .menu_item_cancel {
     position: relative;
-    left: -100%;
+    left: -90%;
 }
 
 ///////
@@ -114,10 +144,10 @@
 /// //////
 .cart_line {
     border-radius: 10px;
-    margin: 0 auto;
+
     margin-top: 2%;
     margin-bottom: 2%;
-    width: 54vw;
+    width: 99%;
     background-color: #9ECF92;
     border: 3px solid #9ECF92;
 }
@@ -144,7 +174,7 @@
 
 .cart_summ_price {
     position: relative;
-    left: -6vh;
+    left: -8vh;
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 800;
