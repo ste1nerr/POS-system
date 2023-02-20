@@ -4,7 +4,6 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
         {
             "type": "node",
             "request": "launch",
@@ -12,19 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\client\\src\\Components\\Menu\\Menu.jsx",
-            "outFiles": [
-                "${workspaceFolder}/**/*.js"
-            ]
-        },{
-            "name": "Chrome",
-            "type": "chrome",
-            "request": "launch",
-            "url": "http://localhost:3000",
-            "webRoot": "${workspaceFolder}/src",
-            "sourceMapPathOverrides": {
-                "webpack:///./*": "${webRoot}/*"
-            }
+            "program": "${workspaceFolder}\\server\\controllers\\menuController.js"
         }
     ]
 }

@@ -6,7 +6,6 @@ export default (req, res, next) => {
     if (token) {
         try {
             const decoded = jwt.verify(token, 'secret')
-
             req.userID = decoded._id;
             next();
         } catch (e) {

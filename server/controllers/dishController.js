@@ -3,20 +3,18 @@ import DishModel from '../models/Dish.js'
 
 
 
-
 export const create = async (req, res) => {
   try {
-    const doc = new DishModel({
+    const doc = new Dish({
       title: req.body.title,
       compositions: req.body.compositions,
       weight: req.body.weight,
       cost: req.body.cost,
+      menu: req.body.menu
     });
 
     const dish = await doc.save();
-
-    res.json(dish)
-  } catch (err) {
+  } catch (error) {
     console.log(err);
     res.status(500).json({
       message: "cannt create dish"
@@ -24,17 +22,19 @@ export const create = async (req, res) => {
   }
 }
 
-export const getAll = async (req, res) => {
+
+export const getAllDishes = async (req, res) => {
   try {
-    const dishes = await DishModel.find();
-    res.json(dishes)
-  } catch (err) {
+    const dishes = await Dish.find().populate('menu');
+    res.status(200).json({ dishes });
+  } catch (error) {
     console.log(err);
     res.status(500).json({
       message: 'cannt get dishes'
     })
   }
-}
+};
+
 
 export const remove = async (req, res) => {
   try {
@@ -84,6 +84,7 @@ export const update = async (req, res) => {
         compositions: req.body.compositions,
         weight: req.body.weight,
         cost: req.body.cost,
+        menu: req.body.menu
       },
     );
 

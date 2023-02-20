@@ -23,4 +23,5 @@ export const dishCreateValidation = [
     body('compositions', 'enter the name of the element').isLength({min:2}).isString().optional(),
     body('weight', 'enter the weight of the dish').isLength({min:1}).isNumeric(),
     body('cost', 'enter the price of the dish').isLength({min:1}).isNumeric(),
+    body('type', 'enter the type of the dish').isNumeric(),
 ];

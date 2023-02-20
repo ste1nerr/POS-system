@@ -1,3 +1,5 @@
+import { config } from 'dotenv';
+config();
 import express from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
@@ -5,9 +7,11 @@ import bcrypt from "bcrypt";
 import { validationResult } from 'express-validator'
 import UserModel from '../models/User.js'
 
+
 export const login = async (req, res) => {
     {
         try {
+            // check for user in base
             const user = await UserModel.findOne({ email: req.body.email });
             if (!user) {
                 return res.status(404).json({
@@ -20,22 +24,13 @@ export const login = async (req, res) => {
                     message: 'wrong login or password'
                 })
             }
-
-
-            const token = jwt.sign(
-                {
-                    _id: user._id
-                }
-                , 'secret',
-                {
-                    expiresIn: '30d'
-                });
-
-            const { passwordHash, ...userData } = user._doc;
-            res.json({
-                ...userData,
-                token,
+            // generate token
+            const token = jwt.sign({ _id: user._id }, process.env.jwt_token, { expiresIn: '30d' }, (err, token) => {
+                if (err) throw err;
+                res.cookie('token', token).json(user)
             });
+
+          
         } catch (err) {
             console.log(err);
             res.status(500).json({
@@ -67,12 +62,12 @@ export const adminLogin = async (req, res) => {
                 {
                     _id: user._id
                 }
-                , 'secret',
+                , process.env.jwt_token,
                 {
                     expiresIn: '30d'
                 });
 
-            const {adminPasswordHash, ...userData } = user._doc;
+            const { adminPasswordHash, ...userData } = user._doc;
             res.json({
                 ...userData,
                 token,
@@ -94,11 +89,9 @@ export const register = async (req, res) => {
         const salt = await bcrypt.genSalt(10)
         const adminPassword = req.body.adminPassword;
         const password = req.body.password;
-
         const hash = await bcrypt.hash(password, salt)
         const adminHash = await bcrypt.hash(adminPassword, salt)
         //hash password
-
         const doc = new UserModel({
             email: req.body.email,
             passwordHash: hash,
@@ -106,14 +99,11 @@ export const register = async (req, res) => {
             adminPasswordHash: adminHash
         });
         const user = await doc.save();
-
         const token = jwt.sign({
             _id: user._id,
-        }, 'secret', { expiresIn: '30d' })
-
+        }, process.env.jwt_token, { expiresIn: '30d' })
+        console.log(token)
         const { passwordHash, adminPasswordHash, ...userData } = user._doc;
-        
-
         res.json({
             ...userData,
             token,
@@ -126,11 +116,24 @@ export const register = async (req, res) => {
     }
 };
 
+export const profile = async (req, res) => {
+    const {token} = req.cookies;
+    if(token){
+        jwt.verify(token, process.env.jwt_token, {}, (err, user) => {
+            if(err) throw err;
+            res.json(user)
+        })
+    } else {
+        res.json(null)
+    }
+    res.json({token})
+
+  }
 
 export const getMe = async (req, res) => {
-    try{
+    try {
         const user = await UserModel.findById(req.userID);
-        if(!user){
+        if (!user) {
             return res.status(404).json({
                 message: "user is not found"
             })
@@ -139,7 +142,7 @@ export const getMe = async (req, res) => {
         const { passwordHash, adminPasswordHash, ...userData } = user._doc;
 
         res.json(userData);
-    }catch(err) {
+    } catch (err) {
         console.log(err)
         res.status(500).json({
             message: 'no access',

@@ -1,25 +1,28 @@
 import axios from 'axios'
 import styles from './Menu.module.scss'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import Cart from '../Cart/Cart';
+import { UserContext } from '../../context/UserContext';
 
 
 
 const Menu = () => {
 
     const [error, setError] = useState(null);
-    const [dishes, setDishes] = useState([]);
+    const [menu, setMenu] = useState([]);
     const [openModal, setOpenModal] = useState(false)
 
 
-
+    const {user} = useContext(UserContext)
 
     useEffect(() => {
         (async () => {
-            const data = await fetch('http://localhost:5000/dishes');
-            var temp = await data.json();
-            setDishes(temp)
-            await console.log(dishes)
+            const data = await fetch('http://localhost:5000/menu');
+            let temp = await data.json();
+            setMenu(temp.menu)
+            console.log(menu)
+            console.log(data)
+            console.log(temp.menu)
         })();
     }, []);
 
@@ -28,14 +31,16 @@ const Menu = () => {
     return (
         <>
             <div className="container">
-
-
                 <header>
                     <p className={styles.menu_title}>Menu</p>
                     <div className={styles.icons_menu}>
                         <a onClick={() => setOpenModal(true)}><img src="./basket-icon.svg" alt="" className={styles.menu_basket} /></a>
                         <Cart open = {openModal} onClose={()=> setOpenModal(false)}/>
-                        <a href="https://www.tutorialspoint.com"><img src="./profile-icon.svg" alt="" className={styles.menu_profile} /> </a>
+                        <a href="https://www.tutorialspoint.com"><img src="./profile-icon.svg" alt="" className={styles.menu_profile} /></a>
+                        {!!user}
+                            <div  className={styles.username}>
+                                {user.fullname}
+                            </div>
                     </div>
                 </header>
 
@@ -53,8 +58,9 @@ const Menu = () => {
                     </div>
 
                     <div className={styles.menu_items}>
-                        {dishes.map((el) => (
-                            <div className={styles.menu_item}>
+                        {menu.map((el) => (
+                            el.dishes.map((el) => (
+                                <div className={styles.menu_item}>                          
                                 <div className={styles.menu_item_text}>
                                     <div className={styles.line}></div>
                                     <div className={styles.menu_item_title}>{el.title}</div>
@@ -66,6 +72,8 @@ const Menu = () => {
                                     <a href="https://www.tutorialspoint.com"><img src="./plus.svg" alt="" className={styles.menu_item_plus} /> </a>
                                 </div>
                             </div>
+                            ))
+                          
                         ))}
 
 
