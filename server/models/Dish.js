@@ -6,6 +6,7 @@ const DishSchema = new mongoose.Schema({
     compositions: {type: String,}, 
     weight: {type: Number, required: true},
     cost: {type: Number, required: true},
+    type: {type: String, required: true},
 
 }, {timestamps: true}, );
 

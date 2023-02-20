@@ -33,24 +33,24 @@ app.use(cors({
   }));
 
 
-app.get('/profile', UserController.profile, menuController.getAll)
+app.get('/profile', UserController.profile)
 app.post('/auth/login', loginValidation, handleValidationErrors, UserController.login)
 app.post('/auth/adminLogin',loginAdminValidation, UserController.adminLogin)
-app.post('/auth/register', registerValidation, handleValidationErrors, UserController.register, menuController.createMenu)
+app.post('/auth/register', registerValidation, handleValidationErrors, UserController.createUser)
 app.get('/auth/me', checkAuth, UserController.getMe)
 
-// ====================
+// // ====================
 
 app.get('/dishes', DishController.getAllDishes);
-// app.post('/dishes1',checkAuth ,dishCreateValidation,DishController.create);
-// app.delete('/dishes/:id', checkAuth , DishController.remove);
-// app.patch('/dishes/:id', DishController.update);
+app.post('/dishes1',checkAuth ,dishCreateValidation,DishController.create);
+app.delete('/dishes/:id', checkAuth , DishController.remove);
+app.patch('/dishes/:id', DishController.update);
 
 
-// ====================
-app.post('/menu/createMenu', menuController.createMenu);
+// // ====================
+// app.post('/menu/createMenu', menuController.createMenu);
 app.post('/menu/AddDish/:menuid', menuController.AddDish);
-app.get('/menu/removeDish', menuController.RemoveDish);
+// app.get('/menu/removeDish', menuController.RemoveDish);
 app.get('/menu', menuController.getAll);
 
 

@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const MenuSchema = new mongoose.Schema({
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     dishes: [{
         title: {type: String, required: true, unique: true},
         compositions: {type: String,}, 

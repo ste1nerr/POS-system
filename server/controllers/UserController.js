@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import { validationResult } from 'express-validator'
 import UserModel from '../models/User.js'
-
+import MenuModel from '../models/Menu.js'
 
 export const login = async (req, res) => {
     {
@@ -82,6 +82,47 @@ export const adminLogin = async (req, res) => {
 
 };
 
+export const createUser  = async (req, res) => {
+    try {
+        // create menu
+        const menu = new MenuModel({
+            items: []
+        });
+        console.log(menu)
+        const savedMenu = await menu.save();
+        //hash password
+        const salt = await bcrypt.genSalt(10)
+        const adminPassword = req.body.adminPassword;
+        const password = req.body.password;
+        const hash = await bcrypt.hash(password, salt)
+        const adminHash = await bcrypt.hash(adminPassword, salt)
+        //hash password
+        const doc = new UserModel({
+            email: req.body.email,
+            passwordHash: hash,
+            fullname: req.body.fullname,
+            adminPasswordHash: adminHash,
+            menu_id: savedMenu._id
+        });
+
+
+        const user = await doc.save();
+        const token = jwt.sign({
+            _id: user._id,
+        }, process.env.jwt_token, { expiresIn: '30d' })
+        console.log(token)
+        const { passwordHash, adminPasswordHash, ...userData } = user._doc;
+        res.json({
+            ...userData,
+            token,
+        });
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            message: 'failed to register',
+        })
+    }
+};
 
 export const register = async (req, res) => {
     try {

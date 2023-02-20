@@ -24,7 +24,7 @@ const Login = () => {
     }
   };
   if(redirect){
-    return <Navigate to= {'/profile'}/>
+    return <Navigate to= {'/menu'}/>
   }
 
   return (

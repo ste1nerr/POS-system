@@ -3,10 +3,9 @@ import MenuModel from '../models/Menu.js'
 
 
 export const createMenu = async (req, res) => {
-    const { user, dishes } = req.body;
+    const {dishes } = req.body;
 
     const newMenu = new Menu({
-        user,
         dishes
     });
 
@@ -27,7 +26,6 @@ export const createMenu = async (req, res) => {
 
 export const getAll = async (req, res) => {
     Menu.find()
-        .populate('user')
         .then(menu => {
             res.status(200).json({
                 menu

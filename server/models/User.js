@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
     passwordHash: {type: String, required: true},
     fullname: {type: String, require: true},
     adminPasswordHash: {type: String, required: true},
+    menu_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Menu' },
 
 }, {timestamps: true}, );
 

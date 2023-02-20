@@ -14,15 +14,12 @@ const Menu = () => {
 
 
     const {user} = useContext(UserContext)
-
+    console.log(user)
     useEffect(() => {
         (async () => {
             const data = await fetch('http://localhost:5000/menu');
             let temp = await data.json();
             setMenu(temp.menu)
-            console.log(menu)
-            console.log(data)
-            console.log(temp.menu)
         })();
     }, []);
 
