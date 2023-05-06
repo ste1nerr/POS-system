@@ -1,7 +1,6 @@
 import Menu from '../models/Menu.js'
 import MenuModel from '../models/Menu.js'
-
-
+import UserModel from '../models/User.js'
 export const createMenu = async (req, res) => {
     const {dishes } = req.body;
 
@@ -75,3 +74,19 @@ export const RemoveDish = async (req, res) => {
         });
 }
 
+
+export const OutputDish  = async(req, res) => {
+    const { menu_id } = req.params;
+    Menu.findOne({ _id: menu_id })
+        .then(menu => {
+            console.log(menu_id)
+            if (!menu) {
+                return res.status(404).json({ error: "Menu not found" });
+            }
+            console.log(menu)
+            res.status(200).json({ menu });
+        })
+        .catch(error => {
+            res.status(500).json({ error: error.message });
+        });
+}

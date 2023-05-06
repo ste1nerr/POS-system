@@ -2,11 +2,11 @@ import mongoose from "mongoose";
 
 const MenuSchema = new mongoose.Schema({
     dishes: [{
-        title: {type: String, required: true, unique: true},
-        compositions: {type: String,}, 
-        weight: {type: Number, required: true},
-        cost: {type: Number, required: true},
-        type: {type: String, required: true},
+        title: {type: String},
+        compositions: {type: String}, 
+        weight: {type: Number},
+        cost: {type: Number},
+        type: {type: String},
     }]
   });
 

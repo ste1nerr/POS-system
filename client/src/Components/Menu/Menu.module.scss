@@ -62,9 +62,7 @@ header {
     flex-direction: column;
     gap: 40px;
 }
-/// /////////////
-//left column///
-/////////////////
+
 .menu_categorie {
     padding: 14% 8%;
     display: flex;
@@ -88,10 +86,30 @@ header {
     background-color: #3A3A3A;
     font-style: normal;
     font-weight: 700;
-    font-size: 25px;
     line-height: 30px;
 }
+@media screen and (max-width: 1500px) {
+    .menu_categorie {
+        padding: 14% 8%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #3A3A3A;
+        border: 1px solid #E1E1E1;
+        border-radius: 25px;
+        background-color: #F4F4F4;
+        font-family: 'Montserrat';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 20px;
+        line-height: 30px;
+    }
+    
+  }
 
+/// /////////////
+//left column///
+/////////////////
 ///////////
 /// //////
 /// ////////
@@ -157,9 +175,25 @@ header {
     background-color: #9ECF92;
     transition-duration: 0.4s;
 }
-
-
-
 .menu_item + .menu_item{
     margin-top: 3.4%;
 }
+
+@media screen and (max-width: 1200px) {
+    .menu_item_title {
+        font-size: 35px;
+    }
+    .menu_item_ingredients {
+        font-size: 15px;
+        line-height: 24px;
+    }
+    
+    .menu_item_weight {
+        font-size: 20px;
+    }
+    
+    .menu_item_cost {
+        font-size: 35px;
+    }
+    
+  }

@@ -4,7 +4,7 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import { validationResult } from 'express-validator'
+import {validationResult} from 'express-validator'
 import UserModel from '../models/User.js'
 import MenuModel from '../models/Menu.js'
 
@@ -86,7 +86,11 @@ export const createUser  = async (req, res) => {
     try {
         // create menu
         const menu = new MenuModel({
-            items: []
+            dishes: [{title: Math.floor(Math.random() * (1000000 - 0) ) + 5, 
+                compositions: Math.floor(Math.random() * (1000000 - 0) ) + 5, 
+                weight: Math.floor(Math.random() * (1000000 - 0) ) + 5, 
+                cost: Math.floor(Math.random() * (1000000 - 0) ) + 5, 
+                type: Math.floor(Math.random() * (1000000 - 0) ) + 5}]
         });
         console.log(menu)
         const savedMenu = await menu.save();

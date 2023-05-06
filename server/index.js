@@ -8,6 +8,7 @@ import bcrypt from "bcrypt";
 import cookieParser from 'cookie-parser';
 
 
+import * as cartController from '../server/controllers/cartController.js'
 import * as UserController from '../server/controllers/UserController.js'
 import * as DishController from '../server/controllers/DishController.js'
 import * as menuController from '../server/controllers/menuController.js'
@@ -52,9 +53,14 @@ app.patch('/dishes/:id', DishController.update);
 app.post('/menu/AddDish/:menuid', menuController.AddDish);
 // app.get('/menu/removeDish', menuController.RemoveDish);
 app.get('/menu', menuController.getAll);
-
+app.get('/menu/:menu_id', menuController.OutputDish);
 
 // ====================
+app.post('/cart/add', cartController.addToCart)
+app.post('/cart/add/:menu_id', cartController.addToCart);
+app.get('/cart', cartController.getCart)
+
+// // ====================
 app.listen(process.env.PORT, (err) => {
     if (err) {
         return console.log(err);

@@ -2,10 +2,20 @@ import React from 'react'
 import { useState } from 'react'
 import styles from './Cart.module.scss'
 
-const Cart = ({open, onClose}) => {
-    if(!open) return null
+const Cart = ({ open, onClose }) => {
+    const [cartItemQuant, setCartItemQuant] = useState(0);
+    if (!open) return null
 
 
+    function increment() {
+        setCartItemQuant(prevQuant => prevQuant + 1);
+    }
+
+    function decrement() {
+        if (cartItemQuant > 0) {
+            setCartItemQuant(prevQuant => prevQuant - 1);
+        }
+    }
     return (
         <>
             <div className={styles.cart}>
@@ -24,66 +34,15 @@ const Cart = ({open, onClose}) => {
                         <div className={styles.menu_item_numbers}>
                             <div className={styles.cart_item_weight}>175g</div>
                             <div className={styles.cart_item_controller}>
-                                <a href="" className={styles.cart_item_minus}>-</a>
-                                <p href="" className={styles.cart_item_quant}>0</p>
-                                <a href="" className={styles.cart_item_plus}>+</a>
+                                <button type="button" onClick={decrement} className={styles.cart_item_minus}>-</button>
+                                <p className={styles.cart_item_quant}>{cartItemQuant}</p>
+                                <button type="button" onClick={increment} className={styles.cart_item_plus}>+</button>
                             </div>
                             <div className={styles.cart_item_cost}>220₴</div>
-                            <a href="https://www.tutorialspoint.com"><img src="./cancel.svg" alt="" className={styles.menu_item_cancel} /> </a>
+                            <a><img src="./cancel.svg" alt="" className={styles.menu_item_cancel} /> </a>
                         </div>
                     </div>
 
-                    <div className={styles.cart_item}>
-                        <div className={styles.cart_item_text}>
-                            <div className={styles.cart_item_title}>Brownie</div>
-                            <div className={styles.cart_item_subtitle}>Dark chocolate Butter, Brown sugar, Egg, Wheat flour, Walnuts</div>
-                        </div>
-                        <div className={styles.menu_item_numbers}>
-                            <div className={styles.cart_item_weight}>175g</div>
-                            <div className={styles.cart_item_controller}>
-                                <a href="" className={styles.cart_item_minus}>-</a>
-                                <p href="" className={styles.cart_item_quant}>0</p>
-                                <a href="" className={styles.cart_item_plus}>+</a>
-                            </div>
-                            <div className={styles.cart_item_cost}>220₴</div>
-                            <a href="https://www.tutorialspoint.com"><img src="./cancel.svg" alt="" className={styles.menu_item_cancel} /> </a>
-                        </div>
-                    </div>
-
-
-                    <div className={styles.cart_item}>
-                        <div className={styles.cart_item_text}>
-                            <div className={styles.cart_item_title}>Brownie</div>
-                            <div className={styles.cart_item_subtitle}>Dark chocolate Butter, Brown sugar, Egg, Wheat flour, Walnuts</div>
-                        </div>
-                        <div className={styles.menu_item_numbers}>
-                            <div className={styles.cart_item_weight}>175g</div>
-                            <div className={styles.cart_item_controller}>
-                                <a href="" className={styles.cart_item_minus}>-</a>
-                                <p href="" className={styles.cart_item_quant}>0</p>
-                                <a href="" className={styles.cart_item_plus}>+</a>
-                            </div>
-                            <div className={styles.cart_item_cost}>220₴</div>
-                            <a href="https://www.tutorialspoint.com"><img src="./cancel.svg" alt="" className={styles.menu_item_cancel} /> </a>
-                        </div>
-                    </div>
-
-                    <div className={styles.cart_item}>
-                        <div className={styles.cart_item_text}>
-                            <div className={styles.cart_item_title}>Brownie</div>
-                            <div className={styles.cart_item_subtitle}>Dark chocolate Butter, Brown sugar, Egg, Wheat flour, Walnuts</div>
-                        </div>
-                        <div className={styles.menu_item_numbers}>
-                            <div className={styles.cart_item_weight}>175g</div>
-                            <div className={styles.cart_item_controller}>
-                                <a href="" className={styles.cart_item_minus}>-</a>
-                                <p href="" className={styles.cart_item_quant}>1</p>
-                                <a href="" className={styles.cart_item_plus}>+</a>
-                            </div>
-                            <div className={styles.cart_item_cost}>220₴</div>
-                            <a href="https://www.tutorialspoint.com"><img src="./cancel.svg" alt="" className={styles.menu_item_cancel} /> </a>
-                        </div>
-                    </div>
 
                     <div className={styles.cart_line}></div>
                     <div className={styles.cart_underline}>
