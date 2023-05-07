@@ -7,6 +7,7 @@ const UserSchema = new mongoose.Schema({
     fullname: {type: String, require: true},
     adminPasswordHash: {type: String, required: true},
     menu_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Menu' },
+    cart_id: { type: mongoose.Schema.Types.ObjectId, ref: 'Cart' }
 }, {timestamps: true}, );
 
 export default mongoose.model('User', UserSchema);

@@ -4,9 +4,10 @@ import express from "express";
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
-import {validationResult} from 'express-validator'
+import { validationResult } from 'express-validator'
 import UserModel from '../models/User.js'
 import MenuModel from '../models/Menu.js'
+import CartModel from '../models/Cart.js'
 
 export const login = async (req, res) => {
     {
@@ -30,7 +31,7 @@ export const login = async (req, res) => {
                 res.cookie('token', token).json(user)
             });
 
-          
+
         } catch (err) {
             console.log(err);
             res.status(500).json({
@@ -82,17 +83,26 @@ export const adminLogin = async (req, res) => {
 
 };
 
-export const createUser  = async (req, res) => {
+export const createUser = async (req, res) => {
     try {
+        const cart = new CartModel({
+            total: 0,
+            dishes: []
+        });
+
+        const savedCart = await cart.save();
         // create menu
         const menu = new MenuModel({
-            dishes: [{title: Math.floor(Math.random() * (1000000 - 0) ) + 5, 
-                compositions: Math.floor(Math.random() * (1000000 - 0) ) + 5, 
-                weight: Math.floor(Math.random() * (1000000 - 0) ) + 5, 
-                cost: Math.floor(Math.random() * (1000000 - 0) ) + 5, 
-                type: Math.floor(Math.random() * (1000000 - 0) ) + 5}]
+            dishes: [{
+                title: Math.floor(Math.random() * (1000000 - 0)) + 5,
+                compositions: Math.floor(Math.random() * (1000000 - 0)) + 5,
+                weight: Math.floor(Math.random() * (1000000 - 0)) + 5,
+                cost: Math.floor(Math.random() * (1000000 - 0)) + 5,
+                type: Math.floor(Math.random() * (1000000 - 0)) + 5
+            }],
+            cart: savedCart._id
         });
-        console.log(menu)
+
         const savedMenu = await menu.save();
         //hash password
         const salt = await bcrypt.genSalt(10)
@@ -106,7 +116,8 @@ export const createUser  = async (req, res) => {
             passwordHash: hash,
             fullname: req.body.fullname,
             adminPasswordHash: adminHash,
-            menu_id: savedMenu._id
+            menu_id: savedMenu._id,
+            cart_id: savedCart._id
         });
 
 
@@ -162,18 +173,18 @@ export const register = async (req, res) => {
 };
 
 export const profile = async (req, res) => {
-    const {token} = req.cookies;
-    if(token){
+    const { token } = req.cookies;
+    if (token) {
         jwt.verify(token, process.env.jwt_token, {}, (err, user) => {
-            if(err) throw err;
+            if (err) throw err;
             res.json(user)
         })
     } else {
         res.json(null)
     }
-    res.json({token})
+    res.json({ token })
 
-  }
+}
 
 export const getMe = async (req, res) => {
     try {

@@ -57,7 +57,8 @@ app.get('/menu/:menu_id', menuController.OutputDish);
 
 // ====================
 app.post('/cart/add', cartController.addToCart)
-app.post('/cart/add/:menu_id', cartController.addToCart);
+//app.post('/cart/:cart_id/items/:menu_id', cartController.addToCart);
+app.post('/cart/add/:menu_id/:cart_id', cartController.addToCart);
 app.get('/cart', cartController.getCart)
 
 // // ====================

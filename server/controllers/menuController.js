@@ -39,18 +39,19 @@ export const getAll = async (req, res) => {
 
 export const AddDish = async (req, res) => {
     const menuID = req.params.menuid;
-    // Define the new dish object
+    // Define the new dish object with quantity set to 1
     const newDish = {
         title: req.body.title,
         compositions: req.body.compositions,
         weight: req.body.weight,
         cost: req.body.cost,
-        type: req.body.type
+        type: req.body.type,
+        quantity: 1
     };
 
     try {
         // Find the document and update the dishes array with the new dish object
-        await Menu.updateOne({ _id: menuID }, { $push: { dishes: newDish } });
+        await Menu.updateOne({ _id: menuID }, { $push: { dishes: newDish } }, { quantity: 1 });
         res.json({
             success: true,
         });

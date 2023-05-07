@@ -7,8 +7,7 @@ import CartModel from '../models/Cart.js'
 export const addToCart = async (req, res) => {
     try {
         const { title, quantity } = req.body;
-        const { menu_id } = req.params;
-        console.log(menu_id);
+        const { menu_id, cart_id } = req.params;
 
         // Ищем меню по ID
         const menu = await Menu.findById(menu_id);
@@ -23,7 +22,7 @@ export const addToCart = async (req, res) => {
         }
 
         // Ищем корзину
-        let cart = await Cart.findOne();
+        let cart = await Cart.findById(cart_id);
         if (!cart) {
             // Если корзина не существует, создаем новую
             const newCart = new Cart({
@@ -32,7 +31,7 @@ export const addToCart = async (req, res) => {
             });
             await newCart.save();
             // Проверяем, что новая корзина успешно сохранена в базу данных
-            cart = await Cart.findOne();
+            cart = await Cart.findById(cart_id);
             if (!cart) {
                 return res.status(500).json({ message: 'Не удалось создать корзину' });
             }
@@ -47,13 +46,7 @@ export const addToCart = async (req, res) => {
                 // Если блюда нет в корзине, добавляем его
                 cart.dishes.push({ title: dish.title, cost: dish.cost,  quantity:quantity });
             }
-            // Обновляем общую стоимость корзины
-            // const totalPrice = cart.dishes.reduce((acc, item) => {
-            //     const dishPrice = item.cost * item.quantity;
-            //     return acc + dishPrice;
-            // }, 0);
-            // cart.total = totalPrice;
-            // Сохраняем изменения в базу данных
+
             await cart.save();
         }
         res.json({ message: 'Блюдо добавлено в корзину' });
@@ -75,3 +68,13 @@ export const getCart = async (req, res) => {
         res.status(500).json({ message: 'Ошибка сервера' });
     }
 };
+
+
+
+            // Обновляем общую стоимость корзины
+            // const totalPrice = cart.dishes.reduce((acc, item) => {
+            //     const dishPrice = item.cost * item.quantity;
+            //     return acc + dishPrice;
+            // }, 0);
+            // cart.total = totalPrice;
+            // Сохраняем изменения в базу данных

@@ -168,10 +168,13 @@ header {
     line-height: 49px;
     /* identical to box height */
 }
-.menu_item_plus:hover {
-    border-radius: 20px;
+button{
+    border: none;
+    background: none;
 }
 .menu_item_plus:hover {
+    cursor: pointer;
+    border-radius: 20px;
     background-color: #9ECF92;
     transition-duration: 0.4s;
 }

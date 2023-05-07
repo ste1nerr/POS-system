@@ -22,9 +22,10 @@ const Menu = () => {
             setMenu(temp.menu.dishes)
         })();
     }, []);
+
     const addToCart = async (item) => {
         try {
-            const response = await fetch(`http://localhost:5000/cart/add/${user.menu_id}`,
+            const response = await fetch(`http://localhost:5000/cart/add/${user.menu_id}/${user.cart_id}`,
                 {
 
                     method: 'POST',
