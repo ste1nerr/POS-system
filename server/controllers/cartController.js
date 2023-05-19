@@ -1,6 +1,5 @@
 import Cart from '../models/Cart.js'
 import Menu from '../models/Menu.js'
-import CartModel from '../models/Cart.js'
 
 
 
@@ -26,7 +25,7 @@ export const addToCart = async (req, res) => {
         if (!cart) {
             // Если корзина не существует, создаем новую
             const newCart = new Cart({
-                dishes: [{ title: dish.title, cost: dish.cost, quantity : 1 }],
+                dishes: [{ title: dish.title, cost: dish.cost, quantity: 1 }],
                 total: dish.cost * quantity,
             });
             await newCart.save();
@@ -44,9 +43,12 @@ export const addToCart = async (req, res) => {
                 cart.dishes[existingItemIndex].quantity += quantity;
             } else {
                 // Если блюда нет в корзине, добавляем его
-                cart.dishes.push({ title: dish.title, cost: dish.cost,  quantity:quantity });
+                cart.dishes.push({ title: dish.title, cost: dish.cost, quantity: quantity });
             }
-
+            
+            // Обновляем общую сумму товаров в корзине
+            cart.total = cart.dishes.reduce((total, item) => total + (item.cost * item.quantity), 0);
+            console.log(cart)
             await cart.save();
         }
         res.json({ message: 'Блюдо добавлено в корзину' });
@@ -69,12 +71,83 @@ export const getCart = async (req, res) => {
     }
 };
 
+export const getCartById = async (req, res) => {
+    try {
+        // Получить идентификатор корзины из запроса
+        const cart_id = req.params.cart_id;
+        // Найти корзину по идентификатору в базе данных
+        const cart = await Cart.findById(cart_id);
+        // Если корзина не найдена, вернуть ошибку
+        if (!cart) {
+            return res.status(404).json({
+                error: 'Корзина не найдена'
+            });
+        }
+        // Отправить ответ с информацией о корзине
+        res.status(200).json({
+            dishes: cart.dishes,
+            total: cart.total
+        });
+    } catch (error) {
+        // Если произошла ошибка, отправить ответ с сообщением об ошибке
+        res.status(500).json({
+            error: error.message
+        });
+    }
+};
 
+export const updateCart = async (req, res) => {
+    try {
+      const cart_id = req.params.cart_id;
+      const title = req.body.title;
+      const newQuantity = req.body.quantity;
+      const cart = await Cart.findById(cart_id);
+  
+      // Находим блюдо в корзине
+      const dish = cart.dishes.find((item) => item.title === title);
+      if (!dish) {
+        return res.status(404).json({ message: 'Dish not found in cart' });
+      }
+  
+      // Обновляем количество блюда
+      dish.quantity = newQuantity;
+      cart.total = cart.dishes.reduce((total, item) => total + item.cost * item.quantity, 0); // Обновляем общую сумму
+      await cart.save();
+  
+      res.json({ success: true });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Cannot update cart' });
+    }
+  };
 
-            // Обновляем общую стоимость корзины
-            // const totalPrice = cart.dishes.reduce((acc, item) => {
-            //     const dishPrice = item.cost * item.quantity;
-            //     return acc + dishPrice;
-            // }, 0);
-            // cart.total = totalPrice;
-            // Сохраняем изменения в базу данных
+export const removeDishFromCart = async (req, res) => {
+    try {
+      const cartId = req.params.cart_id;
+      const title = req.body.title;
+      
+      const cart = await Cart.findById(cartId);
+      if (!cart) {
+        return res.status(404).json({ message: 'Cart not found' });
+      }
+  
+      // Находим индекс блюда в корзине
+      const dishIndex = cart.dishes.findIndex((item) => item.title === title);
+      if (dishIndex === -1) {
+        return res.status(404).json({ message: 'Dish not found in cart' });
+      }
+  
+      // Удаляем блюдо из массива dishes
+      cart.dishes.splice(dishIndex, 1);
+      
+    //   // Пересчитываем общую стоимость корзины
+    //   cart.total = cart.dishes.reduce((total, dish) => total + (dish.cost * dish.quantity), 0);
+      
+      await cart.save();
+  
+      res.json({ success: true });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Cannot remove dish from cart' });
+    }
+  };

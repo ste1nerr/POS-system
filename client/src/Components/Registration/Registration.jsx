@@ -29,9 +29,6 @@ const Registration = () => {
     <>
       <div className='container'>
         <p className={styles.title}>Registration</p>
-
-
-
         <div className={styles.input_card}>
           <p className={styles.input_card_title}>Email</p>
           <input placeholder="Enter your email..."

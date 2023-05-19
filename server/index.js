@@ -18,12 +18,11 @@ import { registerValidation, loginAdminValidation, loginValidation, dishCreateVa
 import checkAuth from '../server/utils/checkAuth.js'
 import handleValidationErrors from './utils/handleValidationErrors.js';
 
-mongoose.connect(`mongodb+srv://${process.env.username_DB}:${process.env.password_DB}@cluster0.9srmsbp.mongodb.net/${process.env.name_DB}?retryWrites=true&w=majority`)
+mongoose.connect(`mongodb+srv://${process.env.username_DB}:${process.env.password_DB}@cluster1.aepm60m.mongodb.net/?retryWrites=true&w=majority`)
     .then(() => console.log('DB ok'))
     .catch((err) => console.log('DB error', err));
 
 const app = express();
-
 
 
 app.use(express.json());
@@ -59,8 +58,9 @@ app.get('/menu/:menu_id', menuController.OutputDish);
 app.post('/cart/add', cartController.addToCart)
 //app.post('/cart/:cart_id/items/:menu_id', cartController.addToCart);
 app.post('/cart/add/:menu_id/:cart_id', cartController.addToCart);
-app.get('/cart', cartController.getCart)
-
+app.get('/cart/:cart_id', cartController.getCartById)
+app.post('/cart/updateQuant/:cart_id', cartController.updateCart)
+app.post('/cart/removeDish/:cart_id', cartController.removeDishFromCart)
 // // ====================
 app.listen(process.env.PORT, (err) => {
     if (err) {
