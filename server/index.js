@@ -71,13 +71,13 @@ app.post('/cart/add/:menu_id/:cart_id', cartController.addToCart);
 app.get('/cart/:cart_id', cartController.getCartById)
 app.post('/cart/updateQuant/:cart_id', cartController.updateCart)
 app.post('/cart/removeDish/:cart_id', cartController.removeDishFromCart)
-app.post('/cart/confirmOrder/:cart_id', orderController.createOrder)
+
 app.get('/cart/check/:cart_id', cartController.checkEmptyOrNo)
 // // ====================
 
-
 //ORDERS
 // // ====================
+app.post('/cart/confirmOrder/:cart_id', orderController.createOrder)
 app.get('/orders/:user_id', orderController.findOrdersByUserId);
 //======================
 

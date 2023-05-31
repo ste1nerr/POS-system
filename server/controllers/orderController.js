@@ -3,11 +3,11 @@ import Menu from '../models/Menu.js'
 import Order from '../models/Order.js';
 
 export const createOrder = async (req, res) => {
-  const cart_id = req.params.cart_id;
-  const currentDate = new Date();
-  const userId = req.body.userId; // Предполагается, что идентификатор пользователя доступен в `req.body.userId`
-
   try {
+    const cart_id = req.params.cart_id
+    const { userId, personalData } = req.body;
+    const currentDate = new Date();
+
     // Поиск корзины по идентификатору
     const cart = await Cart.findById(cart_id);
     if (!cart) {
@@ -25,6 +25,9 @@ export const createOrder = async (req, res) => {
       dishes: cart.dishes,
       total: cart.total,
       userId, // Привязка заказа к пользователю
+      firstname: personalData.firstName, // Сохранение firstname в заказе
+      lastname: personalData.lastName, // Сохранение lastname в заказе
+      street: personalData.street, // Сохранение street в заказе
       createdAt: currentDate,
     });
 
@@ -47,9 +50,6 @@ export const createOrder = async (req, res) => {
     res.status(500).send('Произошла ошибка при оформлении заказа.');
   }
 };
-
-
-
 export const findOrdersByUserId = async (req, res) => {
   const user_id = req.params.user_id; // Используйте cart_id из параметров маршрута
   try {

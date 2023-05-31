@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styles from './Cart.module.scss';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
-import PersonalData from '../../Components/PersonalData/PersonalData'; // Импортируем компонент PersonalData
+import PersonalData from '../../Components/PersonalData/PersonalData'; // Импортируем компонент MyModal
 
 const Cart = ({ open, onClose }) => {
     const [cartItemQuant, setCartItemQuant] = useState(0);
@@ -10,40 +10,21 @@ const Cart = ({ open, onClose }) => {
     const { user } = useContext(UserContext);
     const [isEmptyCart, setIsEmptyCart] = useState(false);
     const [showPersonalData, setShowPersonalData] = useState(false);
-    const [isPersonalDataFilled, setIsPersonalDataFilled] = useState(false);
-    const [personalData, setPersonalData] = useState(null);
+    const [isPersonalDataFilled, setIsPersonalDataFilled] = useState(false); // Добавленное состояние
+    const [personalData, setPersonalData] = useState(null); // Add personalData state variable
+    const [isOrderPlaced, setIsOrderPlaced] = useState(false);
+    const handlePersonalDataClose = () => {
+        setShowPersonalData(false); // Сброс состояния при закрытии модального окна
+    };
+
 
     const handleSave = async (data) => {
+        console.log('Received data:', data);
         setPersonalData(data);
-        setIsPersonalDataFilled(true); // Set the flag indicating that the data is filled
-        await createOrder(); // Call createOrder function to submit the order
-      };
+        setShowPersonalData(false);
 
-    const createOrder = async () => {
-        try {
-            const cartItemsResponse = await axios.get(`http://localhost:5000/cart/${user.cart_id}`);
-            const cartItems = cartItemsResponse.data;
-
-            if (cartItems.length === 0) {
-                setIsEmptyCart(true);
-                return;
-            }
-
-            const dataToSend = {
-                userId: user._id,
-                personalData: personalData,
-            };
-
-            const response = await axios.post(`http://localhost:5000/cart/confirmOrder/${user.cart_id}`, dataToSend);
-            fetchCartItems();
-            if (response.ok) {
-                fetchCartItems();
-            } else {
-                console.error('Ошибка при оформлении заказа:', response.status);
-            }
-        } catch (error) {
-            console.error('Ошибка при оформлении заказа:', error);
-        }
+        await createOrder(data);
+        setIsOrderPlaced(true);
     };
 
     useEffect(() => {
@@ -56,10 +37,13 @@ const Cart = ({ open, onClose }) => {
 
     const updateCartItemQuantity = async (title, newQuantity) => {
         try {
-            const response = await axios.post(`http://localhost:5000/cart/updateQuant/${user.cart_id}`, {
-                title,
-                quantity: newQuantity,
-            });
+            const response = await axios.post(
+                `http://localhost:5000/cart/updateQuant/${user.cart_id}`,
+                {
+                    title,
+                    quantity: newQuantity,
+                }
+            );
             fetchCartItems();
         } catch (error) {
             console.error(error);
@@ -70,7 +54,10 @@ const Cart = ({ open, onClose }) => {
         try {
             const response = await axios.get(`http://localhost:5000/cart/${user.cart_id}`);
             const data = response.data;
-            const total = data.dishes.reduce((acc, dish) => acc + dish.cost * dish.quantity, 0);
+            const total = data.dishes.reduce(
+                (acc, dish) => acc + dish.cost * dish.quantity,
+                0
+            );
             data.total = total;
             setCart(data);
             setIsEmptyCart(data.dishes.length === 0);
@@ -101,15 +88,42 @@ const Cart = ({ open, onClose }) => {
         const newQuantity = currentQuantity + 1;
         await updateCartItemQuantity(title, newQuantity);
     };
-    const handlePersonalDataClose = () => {
-        setShowPersonalData(false); // Сброс состояния при закрытии модального окна
-    };
-    const handleConfirmOrder = async () => {
-        if (!isEmptyCart && isPersonalDataFilled) {
-            setShowPersonalData(true);
-        } else {
-            setShowPersonalData(false);
+
+    const createOrder = async (data1) => {
+        try {
+          const cartItemsResponse = await axios.get(`http://localhost:5000/cart/${user.cart_id}`);
+          const cartItems = cartItemsResponse.data;
+      
+          if (cartItems.dishes.length === 0) {
+            setIsEmptyCart(true);
+            return;
+          }
+      
+          const dataToSend = {
+            userId: user._id,
+            personalData: data1,
+            cartItems: cartItems.dishes // Исправлено: передаем только массив dishes из cartItems
+          };
+      
+          const response = await axios.post(`http://localhost:5000/cart/confirmOrder/${user.cart_id}`, dataToSend);
+          if (response.status === 200) {
+            fetchCartItems();
+          } else {
+            console.error('Ошибка при оформлении заказа:', response.status);
+          }
+      
+          setPersonalData(null); // Reset personalData after placing the order
+        } catch (error) {
+          console.error('Ошибка при оформлении заказа:', error);
         }
+      };
+      
+
+    const handleConfirmOrder = () => {
+        if (!isEmptyCart && isPersonalDataFilled) {
+            createOrder();
+        }
+        setShowPersonalData(true);
     };
 
 
@@ -159,14 +173,14 @@ const Cart = ({ open, onClose }) => {
                         <button onClick={handleConfirmOrder} className={`${confirmButtonClassName} ${styles.menu_item_confirm}`}>
                             <p>{isEmptyCart ? 'Корзина пуста' : 'Оформить'}</p>
                         </button>
+
                     </div>
                     {showPersonalData && (
-                        <PersonalData onSave={handleSave} onClose={handlePersonalDataClose} />
+                        <PersonalData onSave={handleSave} onClose={() => setShowPersonalData(false)} />
                     )}
                 </div>
             </div>
         </>
     );
 };
-
 export default Cart;

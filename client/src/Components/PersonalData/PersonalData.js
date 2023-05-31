@@ -50,16 +50,14 @@ const CustomDialog = styled(Dialog)`
   }
 `;
 
-const PersonalData = ({ onSave, onClose }) => {
+const PersonalData = ({ onSave, onClose}) => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [street, setStreet] = useState('');
 
+
   const handleSubmit = () => {
     // Обработка отправки формы
-    console.log('First Name:', firstName);
-    console.log('Last Name:', lastName);
-    console.log('Street:', street);
     onSave({ firstName, lastName, street }); // Вызов колбэка и передача данных
     onClose(); // Закрытие модального окна
   };

@@ -58,6 +58,9 @@ const OrdersTable = () => {
                             <TableCellStyled>Dishes</TableCellStyled>
                             <TableCellStyled>Total</TableCellStyled>
                             <TableCellStyled>Created At</TableCellStyled>
+                            <TableCellStyled>firstname</TableCellStyled>
+                            <TableCellStyled>lastname</TableCellStyled>
+                            <TableCellStyled>street</TableCellStyled>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -75,6 +78,9 @@ const OrdersTable = () => {
                                 </TableCellStyled>
                                 <TableCellStyled>${order.total}</TableCellStyled>
                                 <TableCellStyled>{order.createdAt}</TableCellStyled>
+                                <TableCellStyled>{order.firstname}</TableCellStyled>
+                                <TableCellStyled>{order.lastname}</TableCellStyled>
+                                <TableCellStyled>{order.street}</TableCellStyled>
                             </TableRow>
                         ))}
                     </TableBody>
