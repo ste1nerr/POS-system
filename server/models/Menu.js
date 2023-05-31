@@ -13,3 +13,4 @@ const MenuSchema = new mongoose.Schema({
 
 
 export default mongoose.model('Menu', MenuSchema);
+

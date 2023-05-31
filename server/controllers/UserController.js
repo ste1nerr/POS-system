@@ -43,45 +43,43 @@ export const login = async (req, res) => {
 };
 
 export const adminLogin = async (req, res) => {
-    {
-        try {
-            const user = await UserModel.findOne({ email: req.body.email });
-            if (!user) {
-                return res.status(404).json({
-                    message: 'user is not found'
-                })
-            }
-            const isValidPass = await bcrypt.compare(req.body.adminPassword, user._doc.adminPasswordHash)
-            if (!isValidPass) {
-                return res.status(400).json({
-                    message: 'wrong login or password'
-                })
-            }
-
-
-            const token = jwt.sign(
-                {
-                    _id: user._id
-                }
-                , process.env.jwt_token,
-                {
-                    expiresIn: '30d'
-                });
-
-            const { adminPasswordHash, ...userData } = user._doc;
-            res.json({
-                ...userData,
-                token,
-            });
-        } catch (err) {
-            console.log(err);
-            res.status(500).json({
-                message: 'failed to login'
-            })
+    try {
+      const user = await UserModel.findOne({ email: req.body.email });
+      if (!user) {
+        return res.status(404).json({
+          message: 'User not found'
+        });
+      }
+  
+      const isValidPass = await bcrypt.compare(req.body.adminPassword, user.adminPasswordHash);
+      if (!isValidPass) {
+        return res.status(400).json({
+          message: 'Wrong login or password'
+        });
+      }
+  
+      const token = jwt.sign(
+        {
+          _id: user._id
+        },
+        process.env.jwt_token,
+        {
+          expiresIn: '30d'
         }
+      );
+  
+      const { adminPasswordHash, ...userData } = user._doc;
+      res.json({
+        ...userData,
+        token
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        message: 'Failed to login'
+      });
     }
-
-};
+  };
 
 export const createUser = async (req, res) => {
     try {

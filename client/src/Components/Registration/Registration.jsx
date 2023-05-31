@@ -2,13 +2,13 @@ import axios from 'axios';
 import React from 'react'
 import { useState } from 'react';
 import styles from './Registration.module.scss'
+import { Link } from 'react-router-dom';
 
 const Registration = () => {
   const [email, setEmail] = useState('');
   const [fullname, setName] = useState('');
   const [password, setPassword] = useState('');
   const [adminPassword, setAdminPassword] = useState('');
-
 
   async function RegisterUser(event) {
     event.preventDefault();
@@ -75,6 +75,7 @@ const Registration = () => {
           role="button"
           href="#"
           className={styles.registration_btn}>Sign Up</a>
+        <p>or <u><Link to="/login">sign in</Link></u></p>
 
       </div>
 

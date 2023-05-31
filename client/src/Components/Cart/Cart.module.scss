@@ -93,6 +93,7 @@
     }
   }
 }
+
 .menu_item_numbers {
   right: 2vw;
   position: relative;
@@ -100,7 +101,8 @@
   text-align: center;
   display: flex;
   align-items: center;
-  gap: 4rem; /* Заменяем justify-content: space-around на gap */
+  gap: 4rem;
+  /* Заменяем justify-content: space-around на gap */
 
   .cart_item_weight {
     position: absolute;
@@ -110,54 +112,64 @@
     font-size: 20px;
     color: #F4F4F4;
   }
-  
+
 
 }
+
 .menu_item_cancel {
   cursor: pointer;
   top: -7px;
 }
+
 .cart_item {
   display: flex;
   align-items: center;
   margin-bottom: 10px;
   gap: 40%;
 }
+
 @media screen and (min-width: 3000px) {
   .cart_item {
     gap: 61vw;
   }
+
   .menu_item_cancel {
     min-width: 100%;
   }
 }
+
 @media screen and (max-width: 3000px) {
   .cart_item {
     gap: 60vw;
   }
 }
+
 @media screen and (max-width: 2000px) {
   .cart_item {
     gap: 50vw;
   }
 }
+
 @media screen and (max-width: 1600px) {
   .cart_item {
     gap: 40vw;
   }
+
   .menu_item_numbers {
     .cart_item_weight {
       right: 20vw;
     }
-    
-  
+
+
   }
 }
+
 @media screen and (max-width: 1200px) {
   .cart_item {
-    gap: 20vw;
+    gap: 30vw;
   }
 }
+
 .cart_item_title {
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
@@ -171,6 +183,7 @@
   font-size: 15px;
   color: #F4F4F4;
 }
+
 .cart_item_cost {
   position: absolute;
   right: 3vw;
@@ -190,6 +203,8 @@
 }
 
 .cart_summ_text {
+  display: flex;
+  min-width: 100%;
   font-family: 'Montserrat', sans-serif;
   font-weight: 800;
   font-size: 20px;
@@ -201,4 +216,46 @@
   font-weight: 800;
   font-size: 25px;
   color: #F4F4F4;
+}
+
+.cart_underline {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cost {
+  display: flex;
+  min-width: 580px;
+}
+
+.menu_item_confirm {
+  margin-right: 1%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: aliceblue;
+  border-radius: 20px;
+  padding: 1% 3%;
+
+  p {
+    color: #000;
+    font-family: 'Montserrat';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+  }
+  &:hover{
+    transition-duration: 0.4s;
+    cursor: pointer;
+    background-color: #9ECF92;
+    // transition-duration: 0.3s;
+    p{
+      color: #F4F4F4;
+    }
+
+  }
 }

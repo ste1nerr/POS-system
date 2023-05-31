@@ -1,21 +1,32 @@
-import axios from 'axios'
-import styles from './Menu.module.scss'
-import { useState, useEffect, useContext } from 'react'
+import axios from 'axios';
+import styles from './Menu.module.scss';
+import { useState, useEffect, useContext } from 'react';
 import Cart from '../Cart/Cart';
 import { UserContext } from '../../context/UserContext';
-
+import { Link } from 'react-router-dom';
 
 const Menu = () => {
   const [cart, setCart] = useState([]);
   const [menu, setMenu] = useState([]);
-  const [openModal, setOpenModal] = useState(false)
-  const { user } = useContext(UserContext)
-  // console.log(user)
+  const [openModal, setOpenModal] = useState(false);
+  const { user } = useContext(UserContext);
+  const [selectedCategory, setSelectedCategory] = useState(null); // New state for selected category
+  const [activeSection, setActiveSection] = useState('menu'); // New state for active section
+
+  const handleSectionClick = (section) => {
+    setActiveSection(section);
+  };
 
   useEffect(() => {
     fetchMenu();
     fetchCart();
   }, []);
+
+  const handleAllClick = () => {
+    setSelectedCategory('All'); // Set the selected category to "All"
+    handleSectionClick('menu'); // Set the active section to "menu"
+  };
+
 
   const fetchMenu = async () => {
     try {
@@ -47,26 +58,25 @@ const Menu = () => {
         body: JSON.stringify(item),
       });
       const data = await response.json();
-      fetchCart(); // Обновляем данные корзины после добавления элемента
+      fetchCart(); // Update cart data after adding an item
     } catch (error) {
       console.error(error);
     }
   };
 
-
-
   return (
     <>
-
       <div className="container">
         <header>
           <p className={styles.menu_title}>Menu</p>
           <div className={styles.icons_menu}>
-            <a onClick={async () => { await  setOpenModal(true); fetchCart();}}>
+            <a onClick={async () => { await setOpenModal(true); fetchCart(); }}>
               <img src="./basket-icon.svg" alt="" className={styles.menu_basket} />
             </a>
             <Cart open={openModal} onClose={() => setOpenModal(false)} />
-            <a href="https://www.tutorialspoint.com"><img src="./profile-icon.svg" alt="" className={styles.menu_profile} /></a>
+            <Link to="/adminLogin">
+              <img src="./profile-icon.svg" alt="" className={styles.menu_profile} />
+            </Link>
             {!!user}
             <div className={styles.username}>
               {user.fullname}
@@ -76,45 +86,69 @@ const Menu = () => {
 
         <div className={styles.under_title}>
           <div className={styles.left_column}>
-            <p className={styles.menu_categorie}>Main</p>
-
-            <p className={styles.menu_categorie}>Garnish</p>
-
-            <p className={styles.menu_categorie}>Salads</p>
-
-            <p className={styles.menu_categorie}>Deserts</p>
-
-            <p className={styles.menu_categorie}>Drinks</p>
+            <p
+              className={`${styles.menu_categorie} ${activeSection === 'All' && styles.active}`}
+              onClick={handleAllClick} // Update the event handler to handleAllClick
+            >
+              All
+            </p>
+            <p
+              className={`${styles.menu_categorie} ${activeSection === 'Main' && styles.active}`}
+              onClick={() => { setSelectedCategory('Main'); handleSectionClick('Main'); }}
+            >
+              Main
+            </p>
+            <p
+              className={`${styles.menu_categorie} ${activeSection === 'Garnish' && styles.active}`}
+              onClick={() => { setSelectedCategory('Garnish'); handleSectionClick('Garnish'); }}
+            >
+              Garnish
+            </p>
+            <p
+              className={`${styles.menu_categorie} ${activeSection === 'Salads' && styles.active}`}
+              onClick={() => { setSelectedCategory('Salads'); handleSectionClick('Salads'); }}
+            >
+              Salads
+            </p>
+            <p
+              className={`${styles.menu_categorie} ${activeSection === 'Deserts' && styles.active}`}
+              onClick={() => { setSelectedCategory('Deserts'); handleSectionClick('Deserts'); }}
+            >
+              Deserts
+            </p>
+            <p
+              className={`${styles.menu_categorie} ${activeSection === 'Drinks' && styles.active}`}
+              onClick={() => { setSelectedCategory('Drinks'); handleSectionClick('Drinks'); }}
+            >
+              Drinks
+            </p>
           </div>
 
           <div className={styles.menu_items}>
-            {!!user}
-            <div className={styles.username}>
-            </div>
+            {!!user && <div className={styles.username}></div>}
             {menu.map((el) => (
-              <div className={styles.menu_item}>
-                <div className={styles.menu_item_text}>
-                  <div className={styles.line}></div>
-                  <div className={styles.menu_item_title}>{el.title}</div>
-                  <div className={styles.menu_item_ingredients}>{el.compositions}</div>
+              (selectedCategory === null || selectedCategory === 'All' || el.type === selectedCategory) && (
+                <div className={styles.menu_item}>
+                  <div className={styles.menu_item_text}>
+                    <div className={styles.line}></div>
+                    <div className={styles.menu_item_title}>{el.title}</div>
+                    <div className={styles.menu_item_ingredients}>{el.compositions}</div>
+                  </div>
+                  <div className={styles.menu_item_numbers}>
+                    <div className={styles.menu_item_weight}>{el.weight}g</div>
+                    <div className={styles.menu_item_cost}>{el.cost}₴</div>
+                    <button onClick={() => addToCart(el)}>
+                      <img src="./plus.svg" alt="" className={styles.menu_item_plus} />
+                    </button>
+                  </div>
                 </div>
-                <div className={styles.menu_item_numbers}>
-                  <div className={styles.menu_item_weight}>{el.weight}g</div>
-                  <div className={styles.menu_item_cost}>{el.cost}₴</div>
-                  <button onClick={() => addToCart(el)}>
-                    <img src="./plus.svg" alt="" className={styles.menu_item_plus} />
-                  </button>
-                </div>
-              </div>
-            )
-            )}
+              )
+            ))}
           </div>
         </div>
       </div>
-
     </>
-  )
-}
+  );
+};
 
-
-export default Menu
+export default Menu;
