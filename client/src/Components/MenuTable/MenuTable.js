@@ -19,10 +19,11 @@ import {
   Grid,
 } from '@mui/material';
 import { styled } from '@mui/system';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 
 const StyledPaper = styled(Paper)(({ theme }) => ({
+  boxShadow:
+  'none',
   width: '68vw',
   overflowX: 'auto',
   borderRadius: theme.shape.borderRadius,
@@ -40,8 +41,9 @@ const themeColors = {
 };
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  boxShadow:
+  'none',
   fontFamily: 'Montserrat', // Добавьте это свойство для изменения шрифта
-  fontWeight: 'bold',
   color: themeColors.text,
 }));
 
@@ -58,6 +60,8 @@ const ButtonGroup = styled('div')(({ theme }) => ({
 }));
 
 const StyledTable = styled(Table)(({ theme }) => ({
+  boxShadow:
+  'none',
   fontFamily: 'Montserrat', // Добавьте это свойство для изменения шрифта
 }));
 
@@ -68,13 +72,21 @@ const StickyTableHeader = styled(TableHead)(({ theme }) => ({
 }));
 
 const DeleteButton = styled(IconButton)(({ theme }) => ({
+  borderRadius: '10px',
+  color: themeColors.text,
   marginLeft: theme.spacing(1),
+  fontFamily: 'Montserrat',
+  fontSize: '0.875rem',
+  backgroundColor: themeColors.grey,
+  fontWeight: 'bold', // Делаем текст жирным
   '&:hover': {
-    backgroundColor: themeColors.red, // Измените цвет hover-эффекта здесь
+    backgroundColor: themeColors.red,
   },
 }));
 
 const EditButton = styled(Button)(({ theme }) => ({
+  borderRadius: '10px',
+  fontWeight: 'bold', // Делаем текст жирным
   fontFamily: 'Montserrat', // Добавьте это свойство для изменения шрифта
   color: themeColors.text,
   backgroundColor: themeColors.grey,
@@ -85,9 +97,8 @@ const EditButton = styled(Button)(({ theme }) => ({
 
 
 const AddCompositionButton = styled(Button)(({ theme }) => ({
+  borderRadius: '10px',
   fontFamily: 'Montserrat', // Добавьте это свойство для изменения шрифта
-  boxShadow:
-    '0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12)',
   backgroundColor: themeColors.grey,
   color: themeColors.dark,
   marginRight: theme.spacing(1),
@@ -97,6 +108,9 @@ const AddCompositionButton = styled(Button)(({ theme }) => ({
 }));
 
 const SaveButton = styled(Button)(({ theme }) => ({
+  borderRadius: '10px',
+  boxShadow:
+  'none',
   fontFamily: 'Montserrat', // Добавьте это свойство для изменения шрифта
   backgroundColor: themeColors.grey,
   color: themeColors.dark,
@@ -107,6 +121,9 @@ const SaveButton = styled(Button)(({ theme }) => ({
 }));
 
 const CancelButton = styled(Button)(({ theme }) => ({
+  borderRadius: '10px',
+  boxShadow:
+  'none',
   fontFamily: 'Montserrat', // Добавьте это свойство для изменения шрифта
   color: themeColors.text,
   backgroundColor: themeColors.grey,
@@ -116,13 +133,24 @@ const CancelButton = styled(Button)(({ theme }) => ({
 }));
 
 const AddButton = styled(Button)(({ theme }) => ({
-  fontFamily: 'Montserrat', // Добавьте это свойство для изменения шрифта
+  boxShadow: 'none',
+  borderRadius: '3px',
+  fontWeight: 'bold',
+  fontFamily: 'Montserrat',
+  border: '1px solid #aaaaaa', // Добавляем рамку
   color: themeColors.text,
   backgroundColor: themeColors.grey,
+
   '&:hover': {
-    backgroundColor: themeColors.secondary, // Измените цвет hover-эффекта здесь
+    backgroundColor: themeColors.secondary,
+    border: 'none', // Добавляем рамку
   },
 }));
+
+
+
+
+
 
 
 
@@ -133,10 +161,12 @@ const AddButton = styled(Button)(({ theme }) => ({
 
 function MenuTable() {
   const [menu, setMenu] = useState([]);
-  const { user } = useContext(UserContext)
+  const [ingredients, setIngredients] = useState([]);
+  const { user } = useContext(UserContext);
 
   useEffect(() => {
     fetchMenu();
+    fetchIngredients();
   }, []);
 
   const fetchMenu = async () => {
@@ -144,6 +174,16 @@ function MenuTable() {
       const response = await fetch(`http://localhost:5000/menu/${user.menu_id}`);
       const data = await response.json();
       setMenu(data.menu.dishes);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const fetchIngredients = async () => {
+    try {
+      const response = await fetch(`http://localhost:5000/storage/get/${user._id}`);
+      const data = await response.json();
+      setIngredients(data);
     } catch (error) {
       console.error(error);
     }
@@ -174,11 +214,11 @@ function MenuTable() {
   };
 
   const [data, setData] = useState([]);
-
   const [selectedRow, setSelectedRow] = useState(null);
   const [editingRow, setEditingRow] = useState(null);
   const [selectedComposition, setSelectedComposition] = useState('');
   const [selectedWeight, setSelectedWeight] = useState('');
+  const compositionOptions = ingredients.map((ingredient) => ingredient.ingredientName);
 
   const handleEditClick = (rowIndex) => {
     if (editingRow === rowIndex) {
@@ -299,14 +339,6 @@ function MenuTable() {
     setData([...data, newRow]);
     setEditingRow(data.length);
   };
-
-  const compositionOptions = [
-    'Composition 1',
-    'Composition 2',
-    'Composition 3',
-    'Composition 4',
-    'Composition 5',
-  ];
 
 
 
@@ -440,7 +472,7 @@ function MenuTable() {
                           <ButtonGroup>
                             <EditButton onClick={() => handleEditClick(el)}>Edit</EditButton>
                             <DeleteButton onClick={() => removeDishFromMenu(el)}>
-                              <DeleteIcon />
+                              DELETE
                             </DeleteButton>
                           </ButtonGroup>
                         </StyledTableCell>

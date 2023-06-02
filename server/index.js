@@ -59,7 +59,7 @@ app.post('/menu/AddDish/:menuid', menuController.AddDish);
 app.get('/menu', menuController.getAll);
 app.get('/menu/:menu_id', menuController.OutputDish);
 app.post('/menu/remove/:menu_id', menuController.removeDishFromMenu);
-app.post('/menu/update/:menu_id')
+
 // app.post('/menu/create/:menu_id', menuController.AddDish);
 
 

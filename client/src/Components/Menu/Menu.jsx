@@ -88,7 +88,7 @@ const Menu = () => {
           <div className={styles.left_column}>
             <p
               className={`${styles.menu_categorie} ${activeSection === 'All' && styles.active}`}
-              onClick={handleAllClick} // Update the event handler to handleAllClick
+              onClick={() => { setSelectedCategory('All'); handleSectionClick('All'); }}
             >
               All
             </p>
