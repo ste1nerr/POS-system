@@ -26,7 +26,3 @@ You can use the software platform to take orders, send them to the kitchen, gene
 ![photo_2023-02-10_00-00-46](https://user-images.githubusercontent.com/99362390/217949720-d08d2d70-6c5d-4c5c-9921-861c7d349099.jpg)
 ![photo_2023-02-10_00-03-04](https://user-images.githubusercontent.com/99362390/217949739-c11579b4-0694-460e-b646-325b2bba5590.jpg)
 ![photo_2023-02-10_00-03-24](https://user-images.githubusercontent.com/99362390/217949744-23a0b7ad-1711-4b75-afe9-e04e4ef14453.jpg)
-![photo_2023-06-01_02-21-30](https://github.com/ste1nerr/POS-system/assets/99362390/645f00ba-69c0-43e8-8ec1-63c9e5f373f0.jpg)
-![photo_2023-06-01_02-21-01](https://github.com/ste1nerr/POS-system/assets/99362390/ad6f7f8c-8355-4c11-80b1-8d443f6b9137.jpg)
-![photo_2023-06-01_02-20-54](https://github.com/ste1nerr/POS-system/assets/99362390/44443166-f03c-40ee-9905-261932f6e179.jpg)
-![photo_2023-06-01_02-21-30](https://github.com/ste1nerr/POS-system/assets/99362390/c3aa88e2-71f2-4651-8f47-fbae2e9208d0.jpg)
