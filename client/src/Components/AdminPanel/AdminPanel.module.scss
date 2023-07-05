@@ -43,6 +43,19 @@ header {
         font-size: 25px;
         line-height: 30px;
     }
+    .back_button {
+        margin-right: 20px;
+        color: #ffffff;
+        border: none;
+        border-radius: 4px;
+        padding: 8px 16px;
+        cursor: pointer;
+        text-decoration: none;
+      }
+      
+      .back_button:hover {
+        background-color: #9ECF92;
+      }
 }
 
 /// /////////////

@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
+import { Link, Route } from 'react-router-dom';
 import styles from './AdminPanel.module.scss';
 import MenuTable from '../MenuTable/MenuTable';
 import OrderTable from '../OrderTable/OrderTable';
 import Storage from '../Storage/Storage';
 import { UserContext } from '../../context/UserContext';
-
-
 
 const AdminPanel = () => {
   const [activeSection, setActiveSection] = useState('storage');
@@ -14,7 +13,6 @@ const AdminPanel = () => {
     setActiveSection(section);
   };
 
-  
   return (
     <>
       <div className="container">
@@ -23,6 +21,9 @@ const AdminPanel = () => {
           <div className={styles.icons_admin}>
             <div className={styles.username}></div>
           </div>
+          <Link to="/menu" className={styles.back_button}>
+            menu
+          </Link>
         </header>
 
         <div className={styles.under_title}>
@@ -64,7 +65,7 @@ const AdminPanel = () => {
             </p>
           </div>
           <div className={styles.categorie_modes}>
-          {activeSection === 'storage' && <Storage />}
+            {activeSection === 'storage' && <Storage />}
             {activeSection === 'menu' && <MenuTable />}
             {activeSection === 'order' && <OrderTable />}
           </div>

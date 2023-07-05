@@ -91,33 +91,33 @@ const Cart = ({ open, onClose }) => {
 
     const createOrder = async (data1) => {
         try {
-          const cartItemsResponse = await axios.get(`http://localhost:5000/cart/${user.cart_id}`);
-          const cartItems = cartItemsResponse.data;
-      
-          if (cartItems.dishes.length === 0) {
-            setIsEmptyCart(true);
-            return;
-          }
-      
-          const dataToSend = {
-            userId: user._id,
-            personalData: data1,
-            cartItems: cartItems.dishes // Исправлено: передаем только массив dishes из cartItems
-          };
-      
-          const response = await axios.post(`http://localhost:5000/cart/confirmOrder/${user.cart_id}`, dataToSend);
-          if (response.status === 200) {
-            fetchCartItems();
-          } else {
-            console.error('Ошибка при оформлении заказа:', response.status);
-          }
-      
-          setPersonalData(null); // Reset personalData after placing the order
+            const cartItemsResponse = await axios.get(`http://localhost:5000/cart/${user.cart_id}`);
+            const cartItems = cartItemsResponse.data;
+
+            if (cartItems.dishes.length === 0) {
+                setIsEmptyCart(true);
+                return;
+            }
+
+            const dataToSend = {
+                userId: user._id,
+                personalData: data1,
+                cartItems: cartItems.dishes // Исправлено: передаем только массив dishes из cartItems
+            };
+
+            const response = await axios.post(`http://localhost:5000/cart/confirmOrder/${user.cart_id}`, dataToSend);
+            if (response.status === 200) {
+                fetchCartItems();
+            } else {
+                console.error('Ошибка при оформлении заказа:', response.status);
+            }
+
+            setPersonalData(null); // Reset personalData after placing the order
         } catch (error) {
-          console.error('Ошибка при оформлении заказа:', error);
+            console.error('Ошибка при оформлении заказа:', error);
         }
-      };
-      
+    };
+
 
     const handleConfirmOrder = () => {
         if (!isEmptyCart && isPersonalDataFilled) {
@@ -143,7 +143,7 @@ const Cart = ({ open, onClose }) => {
                             <div className={styles.cart_item} key={el.title}>
                                 <div className={styles.cart_item_text}>
                                     <div className={styles.cart_item_title}>{el.title}</div>
-                                    <div className={styles.cart_item_subtitle}>Dark chocolate Butter, Brown sugar, Egg, Wheat flour, Walnuts</div>
+                                    <div className={styles.cart_item_subtitle}>{el.compositions}</div>
                                 </div>
                                 <div className={styles.menu_item_numbers}>
                                     <p className={styles.cart_item_weight}>175g</p>
@@ -170,9 +170,13 @@ const Cart = ({ open, onClose }) => {
                             <p className={styles.cart_summ_text}>Account amount:</p>
                             <p className={styles.cart_summ_price}>{cart.total}₴</p>
                         </div>
-                        <button onClick={handleConfirmOrder} className={`${confirmButtonClassName} ${styles.menu_item_confirm}`}>
-                            <p>{isEmptyCart ? 'Корзина пуста' : 'Оформить'}</p>
-                        </button>
+                        {isEmptyCart ? (
+                            <p className={styles.empty_confirm}>basket is empty</p>
+                        ) : (
+                            <button onClick={handleConfirmOrder} className={`${confirmButtonClassName} ${styles.menu_item_confirm}`}>
+                                <p>сheckout</p>
+                            </button>
+                        )}
 
                     </div>
                     {showPersonalData && (

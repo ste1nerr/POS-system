@@ -25,7 +25,7 @@ export const addToCart = async (req, res) => {
         if (!cart) {
             // Если корзина не существует, создаем новую
             const newCart = new Cart({
-                dishes: [{ title: dish.title, cost: dish.cost, quantity: 1 }],
+                dishes: [{ title: dish.title, cost: dish.cost, quantity: 1, compositions: dish.compositions}],
                 total: dish.cost * quantity,
             });
             await newCart.save();
@@ -43,13 +43,14 @@ export const addToCart = async (req, res) => {
                 cart.dishes[existingItemIndex].quantity += quantity;
             } else {
                 // Если блюда нет в корзине, добавляем его
-                cart.dishes.push({ title: dish.title, cost: dish.cost, quantity: quantity });
+                cart.dishes.push({ title: dish.title, cost: dish.cost, quantity: quantity, compositions: dish.compositions});
             }
 
             // Обновляем общую сумму товаров в корзине
             cart.total = cart.dishes.reduce((total, item) => total + (item.cost * item.quantity), 0);
             console.log(cart)
             await cart.save();
+            
         }
         res.json({ message: 'Блюдо добавлено в корзину' });
     } catch (error) {

@@ -54,7 +54,7 @@ const OrdersTable = () => {
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCellStyled>Order Number</TableCellStyled>
+                            <TableCellStyled>Order</TableCellStyled>
                             <TableCellStyled>Dishes</TableCellStyled>
                             <TableCellStyled>Total</TableCellStyled>
                             <TableCellStyled>Created At</TableCellStyled>
